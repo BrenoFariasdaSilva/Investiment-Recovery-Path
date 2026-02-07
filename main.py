@@ -137,6 +137,32 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def merge_and_fill_allocation_data(display_df, target_df):
+    """
+    Merges allocation data with display DataFrame and fills missing values.
+
+    :param display_df: DataFrame with all assets to display
+    :param target_df: DataFrame with allocation data for eligible assets
+    :return: Combined DataFrame with allocations merged and missing values filled
+    """
+
+    alloc = target_df.set_index("Data")[["Investment", "New % Loss", "Improvement %"]]  # Extract allocation columns from target DataFrame
+    combined_df = (  # Merge allocations into display DataFrame using left join
+        display_df.set_index("Data")[["Profit - R$", "Profit - %"]]  # Select profit columns from display DataFrame
+        .join(alloc, how="left")  # Left join with allocations (keeps all display rows)
+        .reset_index()  # Reset index to restore Data column
+    )
+
+    combined_df["Investment"] = combined_df["Investment"].fillna(0.0)  # Fill missing investments with zero (assets that received no allocation)
+    combined_df["New % Loss"] = combined_df["New % Loss"].fillna(combined_df["Profit - %"])  # Fill missing new loss with old loss (no change for unallocated assets)
+    combined_df["Improvement %"] = combined_df["Improvement %"].fillna(0.0)  # Fill missing improvement with zero (no improvement for unallocated assets)
+
+    combined_df = combined_df.sort_values(by="Profit - R$", ascending=True).reset_index(drop=True)  # Sort by loss ascending (worst losses first)
+
+    return combined_df  # Return the merged and filled DataFrame
+
+
+
 def calculate_investment_recovery(INPUT_FILE, sheet_name, budget, excluded_cryptos, exclude_positive_cryptos=True):
     """
     Calculates the optimal investment recovery strategy based on the provided Excel data and parameters.
