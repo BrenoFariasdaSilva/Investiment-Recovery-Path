@@ -137,6 +137,28 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def select_and_rename_display_columns(display_df):
+    """
+    Selects the display columns from raw DataFrame and renames them for presentation.
+
+    :param display_df: Raw DataFrame with original column names
+    :return: DataFrame with renamed presentation columns
+    """
+
+    table = display_df[["Data", "Profit - R$", "Investment", "Profit - %", "New % Loss", "Improvement %"]].copy()  # Select columns for display and create a copy to avoid SettingWithCopyWarning
+
+    table.columns = [
+        "CryptoCurrency",
+        "Current Loss (R$)",
+        "Investment",
+        "Old % Loss",
+        "New % Loss",
+        "Improvement %",
+    ]  # Rename columns for presentation
+
+    return table  # Return the DataFrame with renamed columns for display
+
+
 def compute_totals(final_table, totals_df=None):
     """
     Computes the total current loss and total investment.
