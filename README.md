@@ -67,8 +67,8 @@ Bullet points of the requirements.
 1. Clone the repository with the following command:
 
    ```bash
-   git clone https://github.com/BrenoFariasDaSilva/Investiment Recovery Path.git
-   cd Template-Project
+   git clone https://github.com/BrenoFariasdaSilva/Investiment-Recovery-Path.git
+   cd Investiment-Recovery-Path
    ```
 
 ## Installation:
