@@ -820,7 +820,8 @@ def save_table_to_excel(dataframe, output_filepath):
 
     try:  # Attempt to save the DataFrame to Excel
         df = prepare_output_with_index(dataframe)  # Prepare DataFrame for output (1-based index named "#")
-        df.to_excel(output_filepath, index=True, engine="openpyxl")  # Save DataFrame to Excel including index
+        df_to_save = df.fillna("-")  # Replace NaN values with a dash for cleaner Excel output
+        df_to_save.to_excel(output_filepath, index=True, engine="openpyxl")  # Save DataFrame to Excel including index
         verbose_output(
             f"{BackgroundColors.GREEN}Successfully saved results to: {BackgroundColors.CYAN}{output_filepath}{Style.RESET_ALL}"
         )  # Output success message
@@ -857,7 +858,7 @@ def save_table_to_csv(dataframe, output_filepath):
             encoding="utf-8-sig",  # Use UTF-8 with BOM encoding for compatibility
             float_format="%.2f",  # Format floats with 2 decimal places
             decimal=".",  # Use dot as decimal separator
-            na_rep=""  # Represent NaN values with a blank string
+            na_rep="-"  # Represent NaN values with a dash
         )  # Save DataFrame to CSV including index
 
         verbose_output(f"{BackgroundColors.GREEN}Successfully saved results to: {BackgroundColors.CYAN}{output_filepath}{Style.RESET_ALL}")
