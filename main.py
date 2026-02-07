@@ -137,6 +137,24 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def format_data_rows(rows, col_widths):
+    """
+    Formats all data rows with appropriate colors for each column.
+
+    :param rows: List of row data (each row is a list of values)
+    :param col_widths: List of column widths for alignment
+    :return: List of formatted row strings
+    """
+
+    lines = []  # List to hold formatted row strings
+    for r in rows:  # Iterate through each data row to format the cells with colors based on their column index
+        cells = []  # List to hold formatted cells for the current row
+        for j, val in enumerate(r):  # Iterate through each cell in the row to format it with colors based on its column index
+            cells.append(format_cell_with_color(val, col_widths[j], j))  # Format each cell with color
+        lines.append("  ".join(cells))  # Join the formatted cells with spacing and add to the lines list
+    return lines  # Return the list of formatted row strings
+
+
 def format_table_output(result_table):
     """
     Formats the result table for terminal display with proper number formatting.
