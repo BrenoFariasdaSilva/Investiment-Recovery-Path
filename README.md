@@ -76,6 +76,31 @@ This Investment Recovery Path Calculator is a Python-based tool that analyzes cr
 - colorama == 0.4.6 (for terminal coloring)
 - Excel file with proper format containing columns: Data, Total Spent - R$, Current Amount - R$, Profit - R$, Profit - %
 
+## Usage
+
+1. **Configure the script**: Edit the configuration constants in `main.py`:
+   - `INPUT_FILE`: Path to your Excel file (default: "./Input/Invested Money.xlsx")
+   - `SHEET_NAME`: Name of the Excel sheet to read (default: "CryptoCurrencies")
+   - `AVAILABLE_BUDGET`: Available budget for investment recovery in R$ (default: 500.00)
+   - `EXCLUDED_CRYPTOS`: List of cryptocurrencies to exclude from calculation (default: ["Bitcoin", "Ethereum", "USDC", "USDT", "Ripple"])
+   - `EXCLUDE_POSITIVE_CRYPTOCURRENCIES`: Set to True to exclude cryptocurrencies with positive profit (default: True)
+
+2. **Prepare your Excel file**: Ensure your Excel file has the following columns:
+   - Data (CryptoCurrency names)
+   - Total Spent - R$
+   - Current Amount - R$
+   - Profit - R$
+   - Profit - %
+
+3. **Run the project**:
+   ```bash
+   make run
+   # or
+   python main.py
+   ```
+
+4. **View results**: Check the terminal output for investment recommendations and review `Logs/main.log` for detailed execution history.
+
 ## Results
 
 The script generates comprehensive investment recovery recommendations including:
