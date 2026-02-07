@@ -493,7 +493,6 @@ def build_total_row(total_current_loss, total_investment):
     )
     
 
-
 def append_total_row(final_table, total_row):
     """
     Appends the totals row to the final table and returns a new DataFrame.
@@ -636,7 +635,6 @@ def format_percentage_values(val):
     return str(val)  # For non-numeric values, return the string representation as-is (e.g., cryptocurrency names)
         
 
-
 def pad(s, w):
     """
     Pads the string `s` with spaces on the right to ensure it has a total width of `w`.
@@ -647,7 +645,6 @@ def pad(s, w):
     
     return str(s) + " " * (w - len(str(s)))  # Convert to string and pad with spaces to the right to ensure consistent column width in the table display
     
-
 
 def prepare_table_rows(df):
     """
