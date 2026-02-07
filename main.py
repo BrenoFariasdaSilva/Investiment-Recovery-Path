@@ -1,49 +1,54 @@
 """
 ================================================================================
-<PROJECT OR SCRIPT TITLE>
+Investment Recovery Path Calculator
 ================================================================================
 Author      : Breno Farias da Silva
-Created     : <YYYY-MM-DD>
+Created     : 2026-02-05
 Description :
-    <Provide a concise and complete overview of what this script does.>
-    <Mention its purpose, scope, and relevance to the larger project.>
+    This script analyzes CryptoCurrency investment portfolios from Excel files
+    and calculates optimal recovery strategies for assets with negative returns.
+    It performs proportional allocation of available budget based on current
+    losses to minimize overall portfolio loss percentage.
 
     Key features include:
-        - <Feature 1 — e.g., automatic data loading and preprocessing>
-        - <Feature 2 — e.g., model training and evaluation>
-        - <Feature 3 — e.g., visualization or report generation>
-        - <Feature 4 — e.g., logging or notification system>
-        - <Feature 5 — e.g., integration with other modules or datasets>
+        - Automatic Excel data loading and preprocessing with data cleaning
+        - Proportional loss-based budget allocation across losing assets
+        - New loss percentage calculation after hypothetical investment
+        - Improvement metrics showing expected recovery in percentage points
+        - Comprehensive output table with investment recommendations
 
 Usage:
-    1. <Explain any configuration steps before running, such as editing variables or paths.>
-    2. <Describe how to execute the script — typically via Makefile or Python.>
-            $ make <target>   or   $ python <script_name>.py
-    3. <List what outputs are expected or where results are saved.>
+    1. Edit the configuration constants (INPUT_FILE, SHEET_NAME, AVAILABLE_BUDGET, EXCLUDED_CRYPTOS, EXCLUDE_POSITIVE_CRYPTOCURRENCIES).
+    2. Ensure the Excel file exists with the proper format and sheet name.
+    3. Execute the script via Makefile or directly:
+            $ make run   or   $ python main.py
+    4. View results in terminal and verify logs for detailed execution history.
 
 Outputs:
-    - <Output file or directory 1 — e.g., results.csv>
-    - <Output file or directory 2 — e.g., Feature_Analysis/plots/>
-    - <Output file or directory 3 — e.g., logs/output.txt>
+    - Terminal output with investment recovery recommendations table
+    - Logs/main.log — detailed execution log with timestamps
 
 TODOs:
-    - <Add a task or improvement — e.g., implement CLI argument parsing.>
-    - <Add another improvement — e.g., extend support to Parquet files.>
-    - <Add optimization — e.g., parallelize evaluation loop.>
-    - <Add robustness — e.g., error handling or data validation.>
+    - Implement CLI argument parsing for configuration parameters
+    - Add export functionality to save results to CSV or Excel
+    - Add visualization of before/after portfolio loss distribution
+    - Implement multiple budget scenario comparison
+    - Add data validation for Excel file format verification
 
 Dependencies:
-    - Python >= <version>
-    - <Library 1 — e.g., pandas>
-    - <Library 2 — e.g., numpy>
-    - <Library 3 — e.g., scikit-learn>
-    - <Library 4 — e.g., matplotlib, seaborn, tqdm, colorama>
+    - Python >= 3.7
+    - pandas
+    - numpy
+    - openpyxl (for Excel file reading)
+    - colorama
+    - pathlib (standard library)
 
 Assumptions & Notes:
-    - <List any key assumptions — e.g., last column is the target variable.>
-    - <Mention data format — e.g., CSV files only.>
-    - <Mention platform or OS-specific notes — e.g., sound disabled on Windows.>
-    - <Note on output structure or reusability.>
+    - Excel file must contain columns: Data, Total Spent - R$, Current Amount - R$, Profit - R$, Profit - %
+    - Currency values are in Brazilian Real (R$) format with thousands separator
+    - Only assets with negative profit (losses) are considered for investment (if EXCLUDE_POSITIVE_CRYPTOCURRENCIES is True)
+    - Excluded coins and the SUM row are filtered out automatically
+    - Investment is allocated proportionally to the absolute loss values
 """
 
 import atexit  # For playing a sound when the program finishes
