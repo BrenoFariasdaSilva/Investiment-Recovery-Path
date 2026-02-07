@@ -137,6 +137,40 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def save_table_to_excel(dataframe, output_filepath):
+    """
+    Saves a pandas DataFrame to an Excel file at the specified path.
+
+    :param dataframe: The pandas DataFrame to save
+    :param output_filepath: Full path where the Excel file will be saved
+    :return: True if save was successful, False otherwise
+    """
+
+    verbose_output(
+        f"{BackgroundColors.GREEN}Preparing to save results to: {BackgroundColors.CYAN}{output_filepath}{Style.RESET_ALL}"
+    )  # Output the verbose message
+
+    output_dir = os.path.dirname(output_filepath)  # Extract the directory path from the full file path
+
+    if not verify_filepath_exists(output_dir):  # Check if the output directory exists
+        verbose_output(
+            f"{BackgroundColors.YELLOW}Output directory does not exist. Creating: {BackgroundColors.CYAN}{output_dir}{Style.RESET_ALL}"
+        )  # Output the verbose message
+        os.makedirs(output_dir, exist_ok=True)  # Create the output directory and any necessary parent directories
+
+    try:  # Attempt to save the DataFrame to Excel
+        dataframe.to_excel(output_filepath, index=False, engine="openpyxl")  # Save DataFrame to Excel without row indices
+        verbose_output(
+            f"{BackgroundColors.GREEN}Successfully saved results to: {BackgroundColors.CYAN}{output_filepath}{Style.RESET_ALL}"
+        )  # Output success message
+        return True  # Return True to indicate successful save
+    except Exception as e:  # Handle any errors during file save
+        print(
+            f"{BackgroundColors.RED}Error saving file: {str(e)}{Style.RESET_ALL}"
+        )  # Output error message
+        return False  # Return False to indicate save failure
+
+
 def to_seconds(obj):
     """
     Converts various time-like objects to seconds.
