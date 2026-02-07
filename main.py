@@ -137,6 +137,40 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def present_and_choose_file(matched_files):
+    """
+    Present numbered list of matched files and prompt the user to choose one.
+
+    :param matched_files: A list of tuples (filename, full_path, datetime_or_None)
+    :return: The chosen full path (string) or None if selection was cancelled
+    """
+
+    print(f"{BackgroundColors.YELLOW}Multiple Excel files found. Please choose one to process:{Style.RESET_ALL}")
+    for idx, (filename, _, mtime) in enumerate(matched_files):
+        mtime_str = mtime.strftime("%Y-%m-%d %H:%M:%S") if mtime else ""
+        print(f"{BackgroundColors.GREEN}[{BackgroundColors.CYAN}{idx}{BackgroundColors.GREEN}] - {BackgroundColors.CYAN}{filename}{BackgroundColors.GREEN}  {mtime_str}{Style.RESET_ALL}")
+
+    while True:  # Loop until a valid selection is made or the user cancels
+        try:  # Prompt the user to select a file index, showing the valid range based on the number of matched files
+            choice = input(f"{BackgroundColors.GREEN}Select file index {BackgroundColors.CYAN}[0-{len(matched_files)-1}]{BackgroundColors.GREEN}: {Style.RESET_ALL}").strip()  # Prompt the user to select a file index
+        except (EOFError, KeyboardInterrupt):  # Handle user cancellation (Ctrl+C or Ctrl+D)
+            print()  # Print a newline for better formatting after cancellation
+            return None  # Return None to indicate that the selection was cancelled
+
+        if not choice.isdigit():  # Validate that the input is a digit
+            print(f"{BackgroundColors.RED}Invalid input. Please enter a number between 0 and {len(matched_files)-1}.{Style.RESET_ALL}")
+            continue  # Prompt again if the input is not a valid digit
+
+        idx = int(choice)  # Convert the input to an integer
+        if 0 <= idx < len(matched_files):  # Validate that the index is within the valid range
+            selected_full = matched_files[idx][1]  # Get the full path of the selected file
+            verbose_output(true_string=f"{BackgroundColors.GREEN}Selected file: {BackgroundColors.CYAN}{selected_full}{Style.RESET_ALL}")
+            return selected_full  # Return the full path of the selected file
+
+        print(f"{BackgroundColors.RED}Index out of range. Enter a value between 0 and {len(matched_files)-1}.{Style.RESET_ALL}")
+
+
+
 def discover_input_file(initial_file, input_dir):
     """
     Discovers and resolves the input Excel file to process.
