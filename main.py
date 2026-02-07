@@ -137,6 +137,28 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def format_cell_with_color(val, col_width, col_index):
+    """
+    Formats a single cell with appropriate color based on column index.
+
+    :param val: Value to format and display in the cell
+    :param col_width: Width to pad the cell to for alignment
+    :param col_index: Column index to determine color scheme
+    :return: Formatted cell string with color codes
+    """
+
+    cell = pad(val, col_width)  # Pad the cell value to the appropriate width for alignment
+    if col_index in (0, 1):  # Index and name columns use green background
+        return f"{BackgroundColors.GREEN}{cell}{Style.RESET_ALL}"  # Apply green background to index and name cells
+    elif col_index in (2, 4, 5):  # Current Loss, Old % Loss and New % Loss columns use red background
+        return f"{BackgroundColors.RED}{cell}{Style.RESET_ALL}"  # Apply red background to loss-related cells
+    elif col_index in (3, 6):  # Investment and Improvement columns use cyan background
+        return f"{BackgroundColors.CYAN}{cell}{Style.RESET_ALL}"  # Apply cyan background to investment and improvement cells
+    else:  # Default formatting for any other columns (future expansion)
+        return cell  # Use default formatting for any other cells (currently none, but allows for future expansion)
+
+
+
 def format_header_row(headers, col_widths):
     """
     Formats the header row with appropriate colors for each column.
