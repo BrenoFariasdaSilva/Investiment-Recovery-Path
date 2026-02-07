@@ -137,6 +137,33 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def format_table_output(result_table):
+    """
+    Formats the result table for terminal display with proper number formatting.
+
+    :param result_table: The pandas DataFrame to format
+    :return: Formatted string representation of the table
+    """
+
+    if isinstance(result_table, str):  # If result is an error message string
+        return result_table  # Return the error message as-is
+
+    df = result_table.copy()  # Work with a copy to avoid modifying the original DataFrame
+
+    headers = ["#", "Cryptocurrency", "Current Loss (R$)", "Investment", "Old % Loss", "New % Loss", "Improvement %"]  # Define headers for display
+
+    rows = prepare_table_rows(df)  # Prepare formatted row data
+
+    cols = list(zip(*([headers] + rows))) if rows else [headers]  # Transpose rows to columns for width calculation, but handle case with no data rows
+    col_widths = [max(len(str(x)) for x in col) for col in cols]  # Calculate maximum width for each column based on headers and data for proper alignment
+
+    lines = []  # List to hold each line of the formatted table output
+    lines.append(format_header_row(headers, col_widths))  # Format and add the header row
+    lines.extend(format_data_rows(rows, col_widths))  # Format and add all data rows
+
+    return "\n".join(lines)  # Join all lines with newlines to create the final formatted table string for display in the terminal
+
+
 def save_table_to_excel(dataframe, output_filepath):
     """
     Saves a pandas DataFrame to an Excel file at the specified path.
