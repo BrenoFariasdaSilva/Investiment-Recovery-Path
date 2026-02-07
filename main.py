@@ -506,6 +506,28 @@ def append_total_row(final_table, total_row):
     return pd.concat([final_table, total_row], ignore_index=True)  # Concatenate the final table with the totals row, resetting the index to maintain a clean sequential index
 
 
+def round_numeric_columns(df, column_names, decimals=2):
+    """
+    Convert specified columns to numeric (coercing errors) and round them.
+
+    This centralizes the logic for normalizing numeric output columns
+    so formatting is consistent across the codebase. It accepts a
+    DataFrame, a list of column names, and the number of decimal places to
+    round to. Columns that are not present are ignored.
+
+    :param df: pandas DataFrame to modify
+    :param column_names: list of column name strings to coerce and round
+    :param decimals: number of decimal places to round to (default: 2)
+    :return: the same DataFrame instance with specified columns rounded
+    """
+
+    for col in column_names:  # Iterate through each specified column name
+        if col in df.columns:  # Only process if the column exists in the DataFrame
+            df[col] = pd.to_numeric(df[col], errors="coerce").round(decimals)  # Convert to numeric (coercing errors to NaN) and round to specified decimals
+
+    return df  # Return the modified DataFrame with rounded numeric columns
+
+
 def prepare_final_table(display_df, totals_df=None):
     """
     Prepares the final formatted table for display with totals row.
@@ -533,6 +555,16 @@ def prepare_final_table(display_df, totals_df=None):
     verbose_output(  # Output verbose completion message
         f"{BackgroundColors.GREEN}Final table prepared with {BackgroundColors.CYAN}{len(final_table) - 1}{BackgroundColors.GREEN} investments and totals row{Style.RESET_ALL}"
     )
+
+    numeric_cols = [
+        "Current Loss (R$)",
+        "Investment",
+        "Old % Loss",
+        "New % Loss",
+        "Improvement %",
+    ]  # Define numeric columns to be rounded and normalized
+
+    final_table = round_numeric_columns(final_table, numeric_cols, decimals=2)  # Round numeric columns to 2 decimal places for cleaner display
 
     return final_table  # Return the formatted final table
 
