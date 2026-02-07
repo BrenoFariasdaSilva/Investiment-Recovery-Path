@@ -186,11 +186,20 @@ Generated output files
   - Empty/NA cells are written as a dash (`-`) in the spreadsheet (for clarity on totals or missing percentages).
 
 - **CSV**: `Output/main_Results.csv`
+  - CSV containing header (left-to-right): `#`, `CryptoCurrency`, `Current Loss (R$)`, `Investment`, `Old % Loss`, `New % Loss`, `Improvement %`.
   - Standard CSV format: comma (`,`) delimiter, dot (`.`) decimal separator.
   - Encoded as UTF-8 with BOM to improve compatibility with Excel on Windows.
   - Floats are formatted with two decimal places (e.g. `-1295.39`).
   - The first column is `#` (index starting at 1) and the subsequent columns match the Excel sheet.
 
+  Example CSV (excerpt):
+
+  ```csv
+  #,CryptoCurrency,Current Loss (R$),Investment,Old % Loss,New % Loss,Improvement %
+  1,BTC,-1295.39,250.00,-12.95,-10.52,2.43
+  2,XRP,-502.10,250.00,-25.10,-20.00,5.10
+  3,TOTAL,-1797.49,500.00,-,-,-
+  ```
 Notes about table contents
 - The table includes a final `TOTAL` row where `CryptoCurrency` is `TOTAL` and numeric totals appear under `Current Loss (R$)` and `Investment`; percentage columns for the total are represented with a dash (`-`).
 
