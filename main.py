@@ -823,6 +823,42 @@ def save_table_to_excel(dataframe, output_filepath):
         return False  # Return False to indicate save failure
 
 
+def save_table_to_csv(dataframe, output_filepath):
+    """
+    Saves a pandas DataFrame to a CSV file at the specified path.
+
+    Mirrors the behavior and documentation style of `save_table_to_excel`.
+
+    :param dataframe: The pandas DataFrame to save
+    :param output_filepath: Full path where the CSV file will be saved
+    :return: True if save was successful, False otherwise
+    """
+
+    verbose_output(
+        f"{BackgroundColors.GREEN}Preparing to save results to: {BackgroundColors.CYAN}{output_filepath}{Style.RESET_ALL}"
+    )  # Output the verbose message
+
+    output_dir = os.path.dirname(output_filepath)  # Extract the directory path from the full file path
+
+    if not verify_filepath_exists(output_dir):  # Verify if the output directory exists
+        verbose_output(
+            f"{BackgroundColors.YELLOW}Output directory does not exist. Creating: {BackgroundColors.CYAN}{output_dir}{Style.RESET_ALL}"
+        )  # Output the verbose message
+        os.makedirs(output_dir, exist_ok=True)  # Create the output directory and any necessary parent directories
+
+    try:  # Attempt to save the DataFrame to CSV
+        dataframe.to_csv(output_filepath, index=False, encoding="utf-8")  # Save DataFrame to CSV without row indices
+        verbose_output(
+            f"{BackgroundColors.GREEN}Successfully saved results to: {BackgroundColors.CYAN}{output_filepath}{Style.RESET_ALL}"
+        )  # Output success message
+        return True  # Return True to indicate successful save
+    except Exception as e:  # Handle any errors during file save
+        print(
+            f"{BackgroundColors.RED}Error saving file: {str(e)}{Style.RESET_ALL}"
+        )  # Output error message
+        return False  # Return False to indicate save failure
+
+
 def to_seconds(obj):
     """
     Converts various time-like objects to seconds.
@@ -956,6 +992,7 @@ def main():
     print(format_table_output(result_table))  # Display the formatted result table
 
     save_table_to_excel(result_table, OUTPUT_FILE)  # Save the results table to Excel file
+    save_table_to_csv(result_table, str(Path(OUTPUT_FILE).with_suffix(".csv")))  # Save the results table to CSV file
 
     finish_time = datetime.datetime.now()  # Get the finish time of the program
     print(
