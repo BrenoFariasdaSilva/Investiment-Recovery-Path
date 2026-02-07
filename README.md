@@ -8,7 +8,7 @@
   
 ---
 
-Project-Description.
+Analyzes cryptocurrency investment portfolios and calculates optimal recovery strategies for assets with negative returns through proportional budget allocation.
   
 ---
 
