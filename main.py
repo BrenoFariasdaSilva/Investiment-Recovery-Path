@@ -77,6 +77,14 @@ class BackgroundColors:  # Colors for the terminal
 
 # Execution Constants:
 VERBOSE = False  # Set to True to output verbose messages
+INPUT_DIR = "./Input"  # Directory where input files are stored
+INPUT_FILE = f"{INPUT_DIR}/Invested Money.xlsx"  # Path to the Excel file
+OUTPUT_DIR = "./Output"  # Directory where output files will be saved
+OUTPUT_FILE = f"{OUTPUT_DIR}/{Path(__file__).stem}_Results.xlsx"  # Path to the output Excel file
+SHEET_NAME = "CryptoCurrencies"  # Name of the sheet to read from the Excel file
+AVAILABLE_BUDGET = 500.00  # Available budget for investment recovery (R$)
+EXCLUDED_CRYPTOS = ["Bitcoin", "Ethereum", "USDC", "USDT", "Ripple"]  # Coins to exclude from recovery calculation
+EXCLUDE_POSITIVE_CRYPTOCURRENCIES = True  # Set to True to exclude cryptocurrencies with positive profit from the calculation
 
 # Logger Setup:
 logger = Logger(f"./Logs/{Path(__file__).stem}.log", clean=True)  # Create a Logger instance
