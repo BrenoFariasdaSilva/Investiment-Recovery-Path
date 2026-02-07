@@ -137,6 +137,28 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def build_total_row(total_current_loss, total_investment):
+    """
+    Builds a single-row DataFrame representing the totals row.
+
+    :param total_current_loss: Sum of current losses
+    :param total_investment: Sum of allocated investments
+    :return: Single-row DataFrame suitable for concatenation
+    """
+
+    return pd.DataFrame(
+        {
+            "CryptoCurrency": ["TOTAL"],
+            "Current Loss (R$)": [total_current_loss],
+            "Investment": [total_investment],
+            "Old % Loss": [np.nan],
+            "New % Loss": [np.nan],
+            "Improvement %": [np.nan],
+        }  # Create a DataFrame with the totals row, using NaN for percentage columns since they don't have meaningful totals
+    )
+    
+
+
 def append_total_row(final_table, total_row):
     """
     Appends the totals row to the final table and returns a new DataFrame.
