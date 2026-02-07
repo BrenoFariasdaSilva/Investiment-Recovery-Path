@@ -137,6 +137,34 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def list_input_excel_files(input_dir):
+    """
+    List Excel files in `input_dir` and return a list of tuples:
+    (basename, full_path, modified_datetime_or_None)
+
+    :param input_dir: Directory to search for Excel files
+    :return: List of (name, full_path, modified_datetime) sorted by modified time desc
+    """
+
+    p = Path(input_dir)  # Create a Path object for the input directory
+    if not p.exists() or not p.is_dir():  # Verify if the path exists and is a directory; if not, return an empty list
+        return []  # Return an empty list if the directory doesn't exist or isn't a directory
+
+    matches = []  # List to hold matched files with their modified times
+    for pattern in ("*.xlsx", "*.xls", "*.xlsm"):  # Search for common Excel file extensions
+        for f in p.glob(pattern):  # Iterate through matched files
+            try:  # Attempt to get the modified time of the file; if it fails, set mtime to None
+                mtime = datetime.datetime.fromtimestamp(f.stat().st_mtime)  # Get the modified time of the file
+            except Exception:  # If there's an error accessing the file's modified time, set
+                mtime = None  # Set modified time to None on error
+            matches.append((f.name, str(f.resolve()), mtime))  # Append a tuple of (filename, full_path, modified_time) to the matches list
+
+    matches.sort(key=lambda x: x[2] or datetime.datetime.min, reverse=True)  # Sort matches by modified time (newest first), treating None as the oldest possible date
+    
+    return matches  # Return the list of matched files with their modified times
+
+
+
 def present_and_choose_file(matched_files):
     """
     Present numbered list of matched files and prompt the user to choose one.
