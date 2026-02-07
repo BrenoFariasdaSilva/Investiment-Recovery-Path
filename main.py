@@ -137,6 +137,38 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def prepare_final_table(display_df, totals_df=None):
+    """
+    Prepares the final formatted table for display with totals row.
+
+    This function accepts a DataFrame containing all cryptocurrencies to be
+    displayed (including those that won't receive any investment). The
+    optional `totals_df` parameter is used to compute the summary totals
+    (current losses and total investment) based only on the assets that
+    actually received allocations.
+
+    :param display_df: DataFrame with rows to display (must contain columns: "Data", "Profit - R$", "Profit - %", "Investment", "New % Loss", "Improvement %")
+    :param totals_df: DataFrame used to compute totals (typically only allocated assets)
+    :return: Formatted DataFrame ready for display with proper column names and totals
+    """
+
+    verbose_output(  # Output verbose preparation start message
+        f"{BackgroundColors.GREEN}Preparing final output table...{Style.RESET_ALL}"
+    )
+
+    final_table = select_and_rename_display_columns(display_df)  # Select and rename columns for display
+    total_current_loss, total_investment = compute_totals(final_table, totals_df)  # Compute totals for current loss and investment
+    total_row = build_total_row(total_current_loss, total_investment)  # Build the totals row as a single-row DataFrame
+    final_table = append_total_row(final_table, total_row)  # Append the totals row to the final table
+
+    verbose_output(  # Output verbose completion message
+        f"{BackgroundColors.GREEN}Final table prepared with {BackgroundColors.CYAN}{len(final_table) - 1}{BackgroundColors.GREEN} investments and totals row{Style.RESET_ALL}"
+    )
+
+    return final_table  # Return the formatted final table
+
+
+
 def prepare_empty_allocation_result(display_df):
     """
     Prepares allocation result when no eligible assets are found for investment.
