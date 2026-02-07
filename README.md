@@ -76,6 +76,29 @@ This Investment Recovery Path Calculator is a Python-based tool that analyzes cr
 - colorama == 0.4.6 (for terminal coloring)
 - Excel file with proper format containing columns: Data, Total Spent - R$, Current Amount - R$, Profit - R$, Profit - %
 
+## Run Python Code:
+
+```bash
+# Run directly with Python:
+python3 main.py # Mac and Linux users can use python3
+python main.py # Windows users can use python
+
+# Or using Makefile:
+make run
+```
+
+### Dependencies
+
+1. Install the project dependencies with the following command:
+
+   ```bash
+   # Using Makefile:
+   make dependencies
+   
+   # Or manually with pip:
+   pip install -r requirements.txt
+   ```
+
 ## Usage
 
 1. **Configure the script**: Edit the configuration constants in `main.py`:
