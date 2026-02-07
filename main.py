@@ -137,6 +137,21 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def format_header_row(headers, col_widths):
+    """
+    Formats the header row with appropriate colors for each column.
+
+    :param headers: List of header strings
+    :param col_widths: List of column widths for alignment
+    :return: Formatted header row string
+    """
+
+    header_cells = []  # List to hold formatted header cells with colors
+    for j, h in enumerate(headers):  # Iterate through headers to format them with colors based on their column index
+        header_cells.append(format_cell_with_color(h, col_widths[j], j))  # Format each header cell with color
+    return "  ".join(header_cells)  # Join the formatted header cells with spacing and return as single string
+
+
 def format_data_rows(rows, col_widths):
     """
     Formats all data rows with appropriate colors for each column.
