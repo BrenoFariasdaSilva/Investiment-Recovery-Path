@@ -137,6 +137,33 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def prepare_table_rows(df):
+    """
+    Prepares formatted row data from DataFrame for table display.
+
+    :param df: DataFrame containing result data
+    :return: List of formatted row values
+    """
+
+    rows = []  # List to hold formatted row data
+    for i, row in df.iterrows():  # Iterate through DataFrame rows
+        name = "" if str(row.get("CryptoCurrency", "")).upper() == "TOTAL" else str(row.get("CryptoCurrency", ""))  # Get cryptocurrency name, but use empty string for TOTAL row
+        idx = "" if name == "" else str(len(rows) + 1)  # Use index number for non-TOTAL rows, but leave blank for TOTAL row
+
+        row_vals = [  # Format each cell value appropriately for display
+            idx,  # Row index number
+            name if name != "" else "TOTAL",  # Cryptocurrency name or TOTAL label
+            format_percentage_values(row.get("Current Loss (R$)", "")),  # Current loss formatted
+            format_percentage_values(row.get("Investment", "")),  # Investment amount formatted
+            format_percentage_values(row.get("Old % Loss", "")),  # Old percentage loss formatted
+            format_percentage_values(row.get("New % Loss", "")),  # New percentage loss formatted
+            format_percentage_values(row.get("Improvement %", "")),  # Improvement percentage formatted
+        ]  # Format each cell value appropriately for display, handling NaN and numeric formatting
+        rows.append(row_vals)  # Append the formatted row values to the list of rows
+
+    return rows  # Return the list of formatted rows
+
+
 def format_cell_with_color(val, col_width, col_index):
     """
     Formats a single cell with appropriate color based on column index.
