@@ -137,6 +137,47 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def calculate_investment_recovery(INPUT_FILE, sheet_name, budget, excluded_cryptos, exclude_positive_cryptos=True):
+    """
+    Calculates the optimal investment recovery strategy based on the provided Excel data and parameters.
+
+    :param INPUT_FILE: Path to the Excel file containing investment data
+    :param sheet_name: Name of the sheet to read from the Excel file
+    :param budget: Available budget for investment recovery (R$)
+    :param excluded_cryptos: List of CryptoCurrency names to exclude from calculation
+    :param exclude_positive_cryptos: If True, exclude cryptocurrencies with positive profit
+    :return: Formatted pandas DataFrame with investment recommendations, or error message string
+    """
+
+    try:  # Wrap in error handling
+        df = load_and_clean_excel_data(INPUT_FILE, sheet_name)  # Load and clean Excel data
+
+        display_df = df[(df["Data"] != "SUM")].copy()  # Create display DataFrame excluding SUM row
+
+        target_df = filter_target_investments(display_df, excluded_cryptos, exclude_positive_cryptos)  # Filter for eligible assets
+
+        if len(target_df) == 0:  # If no eligible assets found
+            combined_df = prepare_empty_allocation_result(display_df)  # Prepare result with zero allocations
+            final_table = prepare_final_table(combined_df, totals_df=None)  # Prepare table for display
+            return final_table  # Return the empty allocation result
+
+        target_df = calculate_proportional_allocation(target_df, budget)  # Calculate allocations for eligible assets
+
+        combined_df = merge_and_fill_allocation_data(display_df, target_df)  # Merge allocations and fill missing values
+
+        final_table = prepare_final_table(combined_df, totals_df=target_df)  # Prepare final table for display
+
+        return final_table  # Return results table
+
+    except FileNotFoundError:  # Handle file not found
+        return f"{BackgroundColors.RED}Error: File '{INPUT_FILE}' not found. Please verify the file path.{Style.RESET_ALL}"
+    except ValueError as e:  # Handle value errors
+        return f"{BackgroundColors.RED}Error: Invalid sheet name or data format. {str(e)}{Style.RESET_ALL}"
+    except Exception as e:  # Handle other exceptions
+        return f"{BackgroundColors.RED}Error processing the file: {str(e)}{Style.RESET_ALL}"
+
+
+
 def format_percentage_values(val):
     """
     Formats a value for display in the table, handling NaN and numeric formatting.
