@@ -137,6 +137,18 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def append_total_row(final_table, total_row):
+    """
+    Appends the totals row to the final table and returns a new DataFrame.
+
+    :param final_table: DataFrame with presentation columns
+    :param total_row: Single-row DataFrame containing totals
+    :return: Concatenated DataFrame including totals row
+    """
+
+    return pd.concat([final_table, total_row], ignore_index=True)  # Concatenate the final table with the totals row, resetting the index to maintain a clean sequential index
+
+
 def prepare_final_table(display_df, totals_df=None):
     """
     Prepares the final formatted table for display with totals row.
