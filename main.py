@@ -137,6 +137,24 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def format_percentage_values(val):
+    """
+    Formats a value for display in the table, handling NaN and numeric formatting.
+    
+    :param val: The value to format
+    :return: A string representation of the value, formatted for display
+    """
+    
+    if pd.isna(val):  # If the value is NaN, return an empty string for cleaner display
+        return ""  # Return empty string for NaN values to keep the table clean
+    
+    if isinstance(val, (int, float, np.floating, np.integer)):  # If the value is numeric, format it with commas and 2 decimal places
+        return f"{val:,.2f}"  # Format numeric values with commas and 2 decimal places for better readability
+
+    return str(val)  # For non-numeric values, return the string representation as-is (e.g., cryptocurrency names)
+        
+
+
 def pad(s, w):
     """
     Pads the string `s` with spaces on the right to ensure it has a total width of `w`.
