@@ -137,6 +137,45 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def calculate_proportional_allocation(target_df, budget):
+    """
+    Performs proportional allocation of budget based on loss magnitudes.
+
+    Calculates:
+    - Investment amount proportional to each asset's loss
+    - New percentage loss after hypothetical investment
+    - Improvement in percentage points
+
+    :param target_df: DataFrame containing filtered target investments
+    :param budget: Available budget for investment recovery (R$)
+    :return: DataFrame with added investment allocation columns
+    """
+
+    verbose_output(  # Output verbose allocation start message
+        f"{BackgroundColors.GREEN}Calculating proportional allocation for budget: {BackgroundColors.CYAN}R$ {budget:,.2f}{Style.RESET_ALL}"
+    )
+
+    total_abs_loss = target_df["Profit - R$"].abs().sum()  # Calculate total absolute loss
+
+    verbose_output(  # Output verbose total loss message
+        f"{BackgroundColors.GREEN}Total absolute loss: {BackgroundColors.CYAN}R$ {total_abs_loss:,.2f}{Style.RESET_ALL}"
+    )
+
+    target_df["Investment"] = (target_df["Profit - R$"].abs() / total_abs_loss) * budget  # Calculate proportional investment
+
+    target_df["New % Loss"] = (  # Calculate new percentage loss after investment
+        target_df["Profit - R$"] / (target_df["Total Spent - R$"] + target_df["Investment"])
+    ) * 100
+
+    target_df["Improvement %"] = target_df["New % Loss"] - target_df["Profit - %"]  # Calculate improvement in percentage points
+
+    verbose_output(  # Output verbose completion message
+        f"{BackgroundColors.GREEN}Investment allocation calculations completed{Style.RESET_ALL}"
+    )
+
+    return target_df  # Return DataFrame with allocation columns
+
+
 def select_and_rename_display_columns(display_df):
     """
     Selects the display columns from raw DataFrame and renames them for presentation.
