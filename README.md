@@ -42,8 +42,11 @@ Analyzes cryptocurrency investment portfolios and calculates optimal recovery st
   - [Requirements](#requirements)
   - [Setup](#setup)
     - [Clone the repository](#clone-the-repository)
-  - [Installation:](#installation)
-  - [Run Programing Language Code:](#run-programing-language-code)
+    - [Python, Pip and Venv](#python-pip-and-venv)
+      - [Linux](#linux)
+      - [MacOS](#macos)
+      - [Windows](#windows)
+  - [Run Python Code:](#run-python-code)
     - [Dependencies](#dependencies)
   - [Usage](#usage)
   - [Results](#results)
@@ -54,69 +57,24 @@ Analyzes cryptocurrency investment portfolios and calculates optimal recovery st
 
 ## Introduction
 
-Detailed project description.
+This Investment Recovery Path Calculator is a Python-based tool that analyzes cryptocurrency investment portfolios from Excel files and calculates optimal recovery strategies for assets with negative returns. The script performs proportional allocation of available budget based on current losses to minimize overall portfolio loss percentage.
+
+**Key Features:**
+- Automatic Excel data loading and preprocessing with data cleaning
+- Proportional loss-based budget allocation across losing assets
+- New loss percentage calculation after hypothetical investment
+- Improvement metrics showing expected recovery in percentage points
+- Comprehensive output table with investment recommendations
+- Detailed logging with timestamps for execution history
 
 ## Requirements
 
-Bullet points of the requirements.
-
-## Setup
-
-### Clone the repository
-
-1. Clone the repository with the following command:
-
-   ```bash
-   git clone https://github.com/BrenoFariasdaSilva/Investiment-Recovery-Path.git
-   cd Investiment-Recovery-Path
-   ```
-
-## Installation:
-
-* Programing Language:
-
-  * Manually:
-      ```bash
-      # Programing Language:
-      sudo apt install program-language -y
-      ```
-
-  * Using Makefile:
-      ```bash
-      make install
-      ```
-
-  * Using ShellScript:
-      ```bash
-      chmod +x install.sh
-      sudo ./install.sh
-      ```  
-
-## Run Programing Language Code:
-
-```bash
-# Command here 
-```
-
-### Dependencies
-
-1. Install the project dependencies with the following command:
-
-   ```bash
-   make dependencies
-   ```
-
-## Usage
-
-In order to run the project, run the following command:
-
-```bash
-make run
-```
-
-## Results
-
-Discuss the results obtained in the project.
+- Python >= 3.7
+- pandas >= 2.0.0
+- numpy >= 1.24.0
+- openpyxl >= 3.1.0 (for Excel file reading)
+- colorama == 0.4.6 (for terminal coloring)
+- Excel file with proper format containing columns: Data, Total Spent - R$, Current Amount - R$, Profit - R$, Profit - %
 
 ## Contributing
 
