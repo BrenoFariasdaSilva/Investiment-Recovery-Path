@@ -179,6 +179,21 @@ The script generates comprehensive investment recovery recommendations including
 - **Total Calculations**: Provides total current losses and total investment allocation
 - **Execution Logs**: Detailed logs saved to `Logs/main.log` with timestamps for audit and debugging purposes
 
+Generated output files
+- **Excel**: `Output/main_Results.xlsx`
+  - Sheet contains columns (left-to-right): `#`, `CryptoCurrency`, `Current Loss (R$)`, `Investment`, `Old % Loss`, `New % Loss`, `Improvement %`.
+  - The leading `#` column is a 1-based index (starts at 1).
+  - Empty/NA cells are written as a dash (`-`) in the spreadsheet (for clarity on totals or missing percentages).
+
+- **CSV**: `Output/main_Results.csv`
+  - Standard CSV format: comma (`,`) delimiter, dot (`.`) decimal separator.
+  - Encoded as UTF-8 with BOM to improve compatibility with Excel on Windows.
+  - Floats are formatted with two decimal places (e.g. `-1295.39`).
+  - The first column is `#` (index starting at 1) and the subsequent columns match the Excel sheet.
+
+Notes about table contents
+- The table includes a final `TOTAL` row where `CryptoCurrency` is `TOTAL` and numeric totals appear under `Current Loss (R$)` and `Investment`; percentage columns for the total are represented with a dash (`-`).
+
 All monetary values are displayed in Brazilian Real (R$) with proper formatting, and the output is color-coded for easy reading in the terminal.
 
 ## Contributing
