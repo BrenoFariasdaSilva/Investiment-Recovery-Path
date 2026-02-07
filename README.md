@@ -76,6 +76,20 @@ This Investment Recovery Path Calculator is a Python-based tool that analyzes cr
 - colorama == 0.4.6 (for terminal coloring)
 - Excel file with proper format containing columns: Data, Total Spent - R$, Current Amount - R$, Profit - R$, Profit - %
 
+## Results
+
+The script generates comprehensive investment recovery recommendations including:
+
+- **Filtered Portfolio Analysis**: Identifies all cryptocurrencies with losses (excluding specified coins)
+- **Proportional Budget Allocation**: Distributes the available budget proportionally based on loss magnitudes
+- **Recovery Projections**: Calculates new loss percentages after hypothetical investment
+- **Improvement Metrics**: Shows expected improvement in percentage points for each asset
+- **Summary Table**: Displays CryptoCurrency name, current loss (R$), recommended investment amount, old % loss, new % loss, and improvement percentage
+- **Total Calculations**: Provides total current losses and total investment allocation
+- **Execution Logs**: Detailed logs saved to `Logs/main.log` with timestamps for audit and debugging purposes
+
+All monetary values are displayed in Brazilian Real (R$) with proper formatting, and the output is color-coded for easy reading in the terminal.
+
 ## Contributing
 
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**. If you have suggestions for improving the code, your insights will be highly welcome.
