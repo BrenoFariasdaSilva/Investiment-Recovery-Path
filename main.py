@@ -459,12 +459,12 @@ def compute_totals(final_table, totals_df=None):
         total_current_loss = totals_df["Profit - R$"].sum()  # Sum losses from allocated assets
         total_investment = totals_df["Investment"].sum()  # Sum investments from allocated assets
     else:  # Fallback to summing from the final table if totals_df is not provided or empty (handles case with no eligible assets)
-        if "Current Loss (R$)" in final_table.columns:  # Check if the expected column exists in the final table
+        if "Current Loss (R$)" in final_table.columns:  # Verify if the expected column exists in the final table
             total_current_loss = final_table["Current Loss (R$)"].sum()  # Sum losses from the final table
         else:  # If the expected column is missing, attempt to sum from the original column name as a fallback
             total_current_loss = final_table.get("Profit - R$", pd.Series(dtype=float)).sum()  # Sum losses from the original column if the renamed column is missing, using get to avoid KeyError and defaulting to an empty Series of floats
 
-        if "Investment" in final_table.columns:  # Check if the expected column exists in the final table
+        if "Investment" in final_table.columns:  # Verify if the expected column exists in the final table
             total_investment = final_table["Investment"].sum()  # Sum investments from the final table
         else:  # If the expected column is missing, attempt to sum from the original column name as a fallback
             total_investment = final_table.get("Investment", pd.Series(dtype=float)).sum()  # Sum investments from the original column if the renamed column is missing, using get to avoid KeyError and defaulting to an empty Series of floats
@@ -804,7 +804,7 @@ def save_table_to_excel(dataframe, output_filepath):
 
     output_dir = os.path.dirname(output_filepath)  # Extract the directory path from the full file path
 
-    if not verify_filepath_exists(output_dir):  # Check if the output directory exists
+    if not verify_filepath_exists(output_dir):  # Verify if the output directory exists
         verbose_output(
             f"{BackgroundColors.YELLOW}Output directory does not exist. Creating: {BackgroundColors.CYAN}{output_dir}{Style.RESET_ALL}"
         )  # Output the verbose message
