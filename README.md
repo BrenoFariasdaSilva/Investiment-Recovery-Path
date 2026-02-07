@@ -47,7 +47,7 @@ Project-Description.
     - [Dependencies](#dependencies)
     - [Dataset - Optional](#dataset---optional)
   - [Usage](#usage)
-  - [Results - Optional](#results---optional)
+  - [Results](#results)
   - [Contributing](#contributing)
   - [Collaborators](#collaborators)
   - [License](#license)
@@ -123,7 +123,7 @@ In order to run the project, run the following command:
 make run
 ```
 
-## Results - Optional
+## Results
 
 Discuss the results obtained in the project.
 
