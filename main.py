@@ -137,6 +137,47 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def discover_input_file(initial_file, input_dir):
+    """
+    Discovers and resolves the input Excel file to process.
+
+    If the initial file exists, returns it. Otherwise, searches for Excel files
+    in input_dir and either auto-selects if one, prompts if multiple, or errors if none.
+
+    :param initial_file: The initially configured file path
+    :param input_dir: Directory to search for Excel files if initial_file doesn't exist
+    :return: Resolved file path (string) or None if selection cancelled or no files found
+    """
+
+    if verify_filepath_exists(initial_file):  # If the initial file exists
+        return initial_file  # Return the initial file path
+
+    verbose_output(  # Output the verbose message
+        f"{BackgroundColors.YELLOW}Configured file not found: {BackgroundColors.CYAN}{initial_file}{Style.RESET_ALL}"
+    )
+
+    candidates = list_input_excel_files(input_dir)  # List Excel files in the input directory
+
+    if len(candidates) == 0:  # If no Excel files found
+        print(  # Print error message
+            f"{BackgroundColors.RED}Error: No Excel files found in {BackgroundColors.CYAN}{input_dir}{BackgroundColors.RED}. Please add the input file or update INPUT_FILE.{Style.RESET_ALL}"
+        )
+        return None  # Return None to indicate failure
+
+    if len(candidates) == 1:  # If exactly one Excel file found
+        resolved = candidates[0][1]  # Get the full path of the single file
+        verbose_output(true_string=f"{BackgroundColors.GREEN}Using discovered file: {BackgroundColors.CYAN}{resolved}{Style.RESET_ALL}")  # Output the verbose message
+        return resolved  # Return the resolved file path
+
+    else:  # If multiple Excel files found
+        selected = present_and_choose_file(candidates)  # Prompt the user to choose a file
+        if selected is None:  # If the user cancelled the selection
+            print(f"{BackgroundColors.YELLOW}File selection cancelled. Exiting.{Style.RESET_ALL}")  # Print cancellation message
+            return None  # Return None to indicate cancellation
+        return selected  # Return the selected file path
+
+
+
 def parse_numeric_value(value):
     """
     Robustly parses numeric strings from various formats to float.
