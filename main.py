@@ -137,6 +137,20 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def parse_numeric_columns(df, column_names):
+    """
+    Applies numeric parsing to specified DataFrame columns.
+
+    :param df: DataFrame to modify
+    :param column_names: List of column names to parse
+    :return: DataFrame with parsed numeric columns
+    """
+
+    for col in column_names:  # Iterate through each column name
+        df[col] = df[col].apply(parse_numeric_value)  # Apply numeric parsing to this column
+    return df  # Return the modified DataFrame
+
+
 def normalize_percentage(x):
     """
     Normalizes percentage values to ensure they are in 0-100 range.
