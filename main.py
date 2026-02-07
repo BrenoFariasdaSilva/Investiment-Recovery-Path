@@ -137,6 +137,24 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def prepare_empty_allocation_result(display_df):
+    """
+    Prepares allocation result when no eligible assets are found for investment.
+
+    :param display_df: DataFrame with all assets to display
+    :return: DataFrame with zero allocations for all assets
+    """
+
+    combined_df = display_df[["Data", "Profit - R$", "Profit - %"]].copy()  # Prepare display with basic columns
+    combined_df["Investment"] = 0.0  # Set zero investment for all assets
+    combined_df["New % Loss"] = combined_df["Profit - %"].copy()  # Copy old loss as new loss (no change)
+    combined_df["Improvement %"] = 0.0  # Set zero improvement for all assets
+    combined_df = combined_df.sort_values(by="Profit - R$", ascending=False).reset_index(drop=True)  # Sort by loss descending
+
+    return combined_df  # Return the prepared DataFrame
+
+
+
 def merge_and_fill_allocation_data(display_df, target_df):
     """
     Merges allocation data with display DataFrame and fills missing values.
