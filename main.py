@@ -137,6 +137,24 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def normalize_percentage(x):
+    """
+    Normalizes percentage values to ensure they are in 0-100 range.
+
+    :param x: Percentage value to normalize
+    :return: Normalized percentage value
+    """
+
+    if pd.isna(x):  # If NaN
+        return x  # Return as-is
+    try:  # Attempt normalization
+        if abs(float(x)) <= 1.0:  # If value looks like a fraction (0.0 to 1.0)
+            return float(x) * 100.0  # Convert to percent by multiplying by 100
+        return float(x)  # Otherwise return as is (already in percentage format)
+    except Exception:  # If conversion fails
+        return x  # Return original on error
+
+
 def load_and_clean_excel_data(INPUT_FILE, sheet_name):
     """
     Loads Excel data and performs comprehensive cleaning operations.
