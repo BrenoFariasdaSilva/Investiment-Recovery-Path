@@ -137,6 +137,42 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def filter_target_investments(df, excluded_cryptos, exclude_positive_cryptos=True):
+    """
+    Filters the DataFrame to include only assets eligible for investment recovery.
+
+    Removes excluded cryptos, the SUM row, and optionally assets with positive profit.
+    Only assets with negative profit (losses) are considered for recovery if exclude_positive_cryptos is True.
+
+    :param df: The cleaned pandas DataFrame with investment data
+    :param excluded_cryptos: List of CryptoCurrency names to exclude from calculation
+    :param exclude_positive_cryptos: If True, exclude cryptocurrencies with positive profit
+    :return: Filtered DataFrame containing only eligible investments
+    """
+
+    verbose_output(  # Output verbose filtering start message
+        f"{BackgroundColors.GREEN}Filtering data to find eligible investments...{Style.RESET_ALL}"
+    )
+
+    conditions = [  # Define base filtering conditions
+        (~df["Data"].isin(excluded_cryptos)),  # Exclude specified cryptos
+        (df["Data"] != "SUM")  # Exclude the summary row
+    ]
+    
+    if exclude_positive_cryptos:  # If flag to exclude positive profit is set
+        conditions.append(df["Profit - R$"] < 0)  # Add condition to include only losses
+
+    target_df = df[  # Apply conditions to filter DataFrame
+        np.logical_and.reduce(conditions)
+    ].copy()  # Create a copy to avoid SettingWithCopyWarning
+
+    verbose_output(  # Output verbose count of eligible assets
+        f"{BackgroundColors.GREEN}Found {BackgroundColors.CYAN}{len(target_df)}{BackgroundColors.GREEN} eligible assets{" with losses" if exclude_positive_cryptos else ""}{Style.RESET_ALL}"
+    )
+
+    return target_df  # Return the filtered DataFrame
+
+
 def calculate_proportional_allocation(target_df, budget):
     """
     Performs proportional allocation of budget based on loss magnitudes.
