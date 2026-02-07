@@ -137,6 +137,18 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def pad(s, w):
+    """
+    Pads the string `s` with spaces on the right to ensure it has a total width of `w`.
+
+    :param s: The string to pad
+    :param w: The total width to pad to
+    """
+    
+    return str(s) + " " * (w - len(str(s)))  # Convert to string and pad with spaces to the right to ensure consistent column width in the table display
+    
+
+
 def prepare_table_rows(df):
     """
     Prepares formatted row data from DataFrame for table display.
