@@ -76,6 +76,49 @@ This Investment Recovery Path Calculator is a Python-based tool that analyzes cr
 - colorama == 0.4.6 (for terminal coloring)
 - Excel file with proper format containing columns: Data, Total Spent - R$, Current Amount - R$, Profit - R$, Profit - %
 
+## Setup
+
+### Clone the repository
+
+1. Clone the repository with the following command:
+
+   ```bash
+   git clone https://github.com/BrenoFariasdaSilva/Investiment-Recovery-Path.git
+   cd Investiment-Recovery-Path
+   ```
+
+### Python, Pip and Venv
+
+In order to run the scripts, you must have python3, pip and venv installed in your machine. If you don't have it installed, you can use the following commands to install it:
+
+#### Linux
+
+In order to install python3, pip and venv in Linux, you can use the following commands:
+
+```bash
+sudo apt install python3 python3-pip python3-venv -y
+```
+
+#### MacOS
+
+In order to install python3 and pip in MacOS, you can use the following commands:
+
+```bash
+brew install python3
+```
+
+#### Windows
+
+In order to install python3 and pip in Windows, you can use the following commands in case you have `choco` installed:
+
+```bash
+choco install python3
+```
+
+Or just download the installer from the [official website](https://www.python.org/downloads/).
+
+Great, you now have python3 and pip installed. Now, we need to install the additional project requirements. 
+
 ## Run Python Code:
 
 ```bash
