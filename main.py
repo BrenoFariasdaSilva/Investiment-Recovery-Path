@@ -137,6 +137,46 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def parse_numeric_value(value):
+    """
+    Robustly parses numeric strings from various formats to float.
+
+    :param value: Value to parse (can be string, numeric, or NaN)
+    :return: Parsed float value or np.nan if parsing fails
+    """
+
+    if pd.isna(value):  # If value is NaN
+        return np.nan  # Return NaN immediately
+    
+    if isinstance(value, (int, float, np.floating, np.integer)):  # If already numeric
+        return float(value)  # Return as float
+    
+    s = str(value).strip()  # Convert to string and strip whitespace
+    if s == "":  # If empty string
+        return np.nan  # Return NaN for empty strings
+    
+    s = s.replace("R$", "").replace("r$", "").replace("\u00A0", "").strip()  # Remove currency symbols and non-breaking spaces
+    s = s.replace("%", "").strip()  # Remove percent sign
+    
+    if re.match(r"^[+-]?\d{1,3}(?:\.\d{3})+(?:,\d+)?$", s):  # Pattern: thousands with dot, decimal comma (e.g., 1.234,56)
+        s = s.replace(".", "").replace(",", ".")  # Remove thousand separators and convert decimal comma to dot
+        
+    elif re.match(r"^[+-]?\d{1,3}(?:,\d{3})+(?:\.\d+)?$", s):  # Pattern: thousands with comma, decimal dot (e.g., 1,234.56)
+        s = s.replace(",", "")  # Remove thousand separators
+        
+    elif re.match(r"^[+-]?\d+,\d+$", s):  # Pattern: simple comma decimal (e.g., 123,45)
+        s = s.replace(",", ".")  # Convert decimal comma to dot
+        
+    s = s.strip()  # Remove any remaining stray spaces
+    s = re.sub(r"[^0-9+\-\.]", "", s)  # Keep only digits, plus/minus signs, and decimal dot
+    
+    try:  # Attempt conversion to float
+        return float(s)  # Convert to float and return
+    except Exception:  # If conversion fails
+        return np.nan  # Return NaN on failure
+
+
+
 def parse_numeric_columns(df, column_names):
     """
     Applies numeric parsing to specified DataFrame columns.
