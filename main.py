@@ -137,6 +137,47 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def load_and_clean_excel_data(INPUT_FILE, sheet_name):
+    """
+    Loads Excel data and performs comprehensive cleaning operations.
+
+    :param INPUT_FILE: Path to the Excel file to be loaded
+    :param sheet_name: Name of the sheet to read from the Excel file
+    :return: Cleaned pandas DataFrame with proper column names and data types
+    """
+
+    verbose_output(  # Output verbose loading message
+        f"{BackgroundColors.GREEN}Loading Excel file: {BackgroundColors.CYAN}{INPUT_FILE}{BackgroundColors.GREEN}, Sheet: {BackgroundColors.CYAN}{sheet_name}{Style.RESET_ALL}"
+    )
+
+    df = pd.read_excel(INPUT_FILE, sheet_name=sheet_name)  # Load the Excel file
+
+    verbose_output(  # Output verbose row count message
+        f"{BackgroundColors.GREEN}Loaded {BackgroundColors.CYAN}{len(df)}{BackgroundColors.GREEN} rows from Excel file{Style.RESET_ALL}"
+    )
+
+    df.columns = [col.strip().replace(":", "") for col in df.columns]  # Clean column names by stripping and removing colons
+
+    df["Data"] = df["Data"].astype(str).str.replace(":", "").str.strip()  # Clean "Data" column by removing colons and stripping
+
+    cols_to_fix = ["Total Spent - R$", "Current Amount - R$", "Profit - R$", "Profit - %"]  # Define columns requiring numeric parsing
+
+    df = parse_numeric_columns(df, cols_to_fix)  # Parse numeric columns
+
+    pct_col = "Profit - %"  # Define percentage column
+    if pct_col in df.columns:  # If percentage column exists
+        try:  # Attempt percentage normalization
+            df[pct_col] = df[pct_col].apply(normalize_percentage)  # Apply normalization
+        except Exception:  # If normalization fails
+            pass  # Ignore errors and continue
+
+    verbose_output(  # Output verbose completion message
+        f"{BackgroundColors.GREEN}Data cleaning completed successfully{Style.RESET_ALL}"
+    )
+
+    return df  # Return the cleaned DataFrame
+
+
 def filter_target_investments(df, excluded_cryptos, exclude_positive_cryptos=True):
     """
     Filters the DataFrame to include only assets eligible for investment recovery.
