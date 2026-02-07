@@ -802,14 +802,6 @@ def save_table_to_excel(dataframe, output_filepath):
         f"{BackgroundColors.GREEN}Preparing to save results to: {BackgroundColors.CYAN}{output_filepath}{Style.RESET_ALL}"
     )  # Output the verbose message
 
-    output_dir = os.path.dirname(output_filepath)  # Extract the directory path from the full file path
-
-    if not verify_filepath_exists(output_dir):  # Verify if the output directory exists
-        verbose_output(
-            f"{BackgroundColors.YELLOW}Output directory does not exist. Creating: {BackgroundColors.CYAN}{output_dir}{Style.RESET_ALL}"
-        )  # Output the verbose message
-        os.makedirs(output_dir, exist_ok=True)  # Create the output directory and any necessary parent directories
-
     try:  # Attempt to save the DataFrame to Excel
         dataframe.to_excel(output_filepath, index=False, engine="openpyxl")  # Save DataFrame to Excel without row indices
         verbose_output(
@@ -838,13 +830,6 @@ def save_table_to_csv(dataframe, output_filepath):
         f"{BackgroundColors.GREEN}Preparing to save results to: {BackgroundColors.CYAN}{output_filepath}{Style.RESET_ALL}"
     )  # Output the verbose message
 
-    output_dir = os.path.dirname(output_filepath)  # Extract the directory path from the full file path
-
-    if not verify_filepath_exists(output_dir):  # Verify if the output directory exists
-        verbose_output(
-            f"{BackgroundColors.YELLOW}Output directory does not exist. Creating: {BackgroundColors.CYAN}{output_dir}{Style.RESET_ALL}"
-        )  # Output the verbose message
-        os.makedirs(output_dir, exist_ok=True)  # Create the output directory and any necessary parent directories
 
     try:  # Attempt to save the DataFrame to CSV
         dataframe.to_csv(output_filepath, index=False, encoding="utf-8")  # Save DataFrame to CSV without row indices
@@ -990,6 +975,9 @@ def main():
         end="\n",
     )  # Output results header
     print(format_table_output(result_table))  # Display the formatted result table
+    
+    if not verify_filepath_exists(OUTPUT_DIR):  # Ensure output directory exists
+        os.makedirs(OUTPUT_DIR, exist_ok=True)  # Create the output directory if it does not exist
 
     save_table_to_excel(result_table, OUTPUT_FILE)  # Save the results table to Excel file
     save_table_to_csv(result_table, str(Path(OUTPUT_FILE).with_suffix(".csv")))  # Save the results table to CSV file
