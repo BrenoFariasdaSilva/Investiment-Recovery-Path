@@ -789,6 +789,22 @@ def format_table_output(result_table):
     return "\n".join(lines)  # Join all lines with newlines to create the final formatted table string for display in the terminal
 
 
+def prepare_output_with_index(dataframe):
+    """
+    Prepares the DataFrame for output by resetting the index to start at 1 and naming it "#".
+
+    :param dataframe: pandas DataFrame to prepare
+    :return: new DataFrame with index starting at 1 and named "#"
+    """
+
+    df = dataframe.copy()  # Work with a copy to avoid modifying the original DataFrame
+    df.reset_index(drop=True, inplace=True)  # Reset index to default 0-based
+    df.index = df.index + 1  # Shift index to start at 1
+    df.index.name = "#"  # Name the index column "#"
+    
+    return df  # Return the prepared DataFrame
+
+
 def save_table_to_excel(dataframe, output_filepath):
     """
     Saves a pandas DataFrame to an Excel file at the specified path.
@@ -803,7 +819,8 @@ def save_table_to_excel(dataframe, output_filepath):
     )  # Output the verbose message
 
     try:  # Attempt to save the DataFrame to Excel
-        dataframe.to_excel(output_filepath, index=False, engine="openpyxl")  # Save DataFrame to Excel without row indices
+        df = prepare_output_with_index(dataframe)  # Prepare DataFrame for output (1-based index named "#")
+        df.to_excel(output_filepath, index=True, engine="openpyxl")  # Save DataFrame to Excel including index
         verbose_output(
             f"{BackgroundColors.GREEN}Successfully saved results to: {BackgroundColors.CYAN}{output_filepath}{Style.RESET_ALL}"
         )  # Output success message
@@ -830,17 +847,23 @@ def save_table_to_csv(dataframe, output_filepath):
         f"{BackgroundColors.GREEN}Preparing to save results to: {BackgroundColors.CYAN}{output_filepath}{Style.RESET_ALL}"
     )  # Output the verbose message
 
-
     try:  # Attempt to save the DataFrame to CSV
-        dataframe.to_csv(output_filepath, index=False, encoding="utf-8")  # Save DataFrame to CSV without row indices
-        verbose_output(
-            f"{BackgroundColors.GREEN}Successfully saved results to: {BackgroundColors.CYAN}{output_filepath}{Style.RESET_ALL}"
-        )  # Output success message
+        df = prepare_output_with_index(dataframe)  # Prepare DataFrame for output (1-based index named "#")
+
+        df.to_csv(
+            output_filepath,  # Path to save the CSV file
+            index=True,  # Include index in the CSV
+            sep=",",  # Use comma as the separator
+            encoding="utf-8-sig",  # Use UTF-8 with BOM encoding for compatibility
+            float_format="%.2f",  # Format floats with 2 decimal places
+            decimal=".",  # Use dot as decimal separator
+            na_rep=""  # Represent NaN values with a blank string
+        )  # Save DataFrame to CSV including index
+
+        verbose_output(f"{BackgroundColors.GREEN}Successfully saved results to: {BackgroundColors.CYAN}{output_filepath}{Style.RESET_ALL}")
         return True  # Return True to indicate successful save
     except Exception as e:  # Handle any errors during file save
-        print(
-            f"{BackgroundColors.RED}Error saving file: {str(e)}{Style.RESET_ALL}"
-        )  # Output error message
+        print(f"{BackgroundColors.RED}Error saving file: {str(e)}{Style.RESET_ALL}")
         return False  # Return False to indicate save failure
 
 
