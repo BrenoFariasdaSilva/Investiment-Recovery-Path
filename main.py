@@ -137,6 +137,32 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def compute_totals(final_table, totals_df=None):
+    """
+    Computes the total current loss and total investment.
+
+    :param final_table: DataFrame already prepared for display (renamed columns)
+    :param totals_df: Optional DataFrame with allocation rows to compute totals from
+    :return: Tuple (total_current_loss, total_investment)
+    """
+
+    if totals_df is not None and not totals_df.empty:  # Prefer totals from allocated assets when available
+        total_current_loss = totals_df["Profit - R$"].sum()  # Sum losses from allocated assets
+        total_investment = totals_df["Investment"].sum()  # Sum investments from allocated assets
+    else:  # Fallback to summing from the final table if totals_df is not provided or empty (handles case with no eligible assets)
+        if "Current Loss (R$)" in final_table.columns:  # Check if the expected column exists in the final table
+            total_current_loss = final_table["Current Loss (R$)"].sum()  # Sum losses from the final table
+        else:  # If the expected column is missing, attempt to sum from the original column name as a fallback
+            total_current_loss = final_table.get("Profit - R$", pd.Series(dtype=float)).sum()  # Sum losses from the original column if the renamed column is missing, using get to avoid KeyError and defaulting to an empty Series of floats
+
+        if "Investment" in final_table.columns:  # Check if the expected column exists in the final table
+            total_investment = final_table["Investment"].sum()  # Sum investments from the final table
+        else:  # If the expected column is missing, attempt to sum from the original column name as a fallback
+            total_investment = final_table.get("Investment", pd.Series(dtype=float)).sum()  # Sum investments from the original column if the renamed column is missing, using get to avoid KeyError and defaulting to an empty Series of floats
+
+    return total_current_loss, total_investment  # Return the computed totals as a tuple
+
+
 def build_total_row(total_current_loss, total_investment):
     """
     Builds a single-row DataFrame representing the totals row.
