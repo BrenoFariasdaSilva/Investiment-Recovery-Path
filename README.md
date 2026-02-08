@@ -1,6 +1,6 @@
 <div align="center">
   
-# [Investiment Recovery Path.](https://github.com/BrenoFariasdaSilva/Investiment-Recovery-Path) <img src="https://github.com/BrenoFariasdaSilva/Investiment-Recovery-Path/blob/main/.assets/Icons/investment.svg"  width="3%" height="3%">
+# [Investment Recovery Path.](https://github.com/BrenoFariasdaSilva/Investiment-Recovery-Path) <img src="https://github.com/BrenoFariasdaSilva/Investiment-Recovery-Path/blob/main/.assets/Icons/investment.svg"  width="3%" height="3%">
 
 </div>
 
@@ -25,7 +25,7 @@ Analyzes cryptocurrency investment portfolios and calculates optimal recovery st
 ![GitHub Stars](https://img.shields.io/github/stars/BrenoFariasdaSilva/Template-Project)
 ![GitHub Contributors](https://img.shields.io/github/contributors/BrenoFariasdaSilva/Template-Project)
 ![GitHub Created At](https://img.shields.io/github/created-at/BrenoFariasdaSilva/Template-Project)
-![wakatime](https://wakatime.com/badge/github/BrenoFariasdaSilva/Investiment Recovery Path.svg)
+![wakatime](https://wakatime.com/badge/github/BrenoFariasdaSilva/Investiment-Recovery-Path.svg)
 
 </div>
 
@@ -36,7 +36,7 @@ Analyzes cryptocurrency investment portfolios and calculates optimal recovery st
 </div>
 
 ## Table of Contents
-- [Investiment Recovery Path. ](#investiment-recovery-path-)
+- [Investment Recovery Path. ](#investment-recovery-path-)
   - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Requirements](#requirements)
