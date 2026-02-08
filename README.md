@@ -1,6 +1,6 @@
 <div align="center">
   
-# [Investment Recovery Path.](https://github.com/BrenoFariasdaSilva/Investiment-Recovery-Path) <img src="https://github.com/BrenoFariasdaSilva/Investiment-Recovery-Path/blob/main/.assets/Icons/Investment.png"  width="3%" height="4%">
+# [Investment Recovery Path.](https://github.com/BrenoFariasdaSilva/Investiment-Recovery-Path) <img src="https://github.com/BrenoFariasdaSilva/Investiment-Recovery-Path/blob/main/.assets/Icons/Investment.png"  width="4%" height="4%">
 
 </div>
 
