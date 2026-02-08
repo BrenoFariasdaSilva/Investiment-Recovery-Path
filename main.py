@@ -80,7 +80,6 @@ VERBOSE = False  # Set to True to output verbose messages
 INPUT_DIR = "./Input"  # Directory where input files are stored
 INPUT_FILE = f"{INPUT_DIR}/Invested Money.xlsx"  # Path to the Excel file
 OUTPUT_DIR = "./Output"  # Directory where output files will be saved
-OUTPUT_FILE = f"{OUTPUT_DIR}/{Path(__file__).stem}_Results.xlsx"  # Path to the output Excel file
 SHEET_NAME = "CryptoCurrencies"  # Name of the sheet to read from the Excel file
 AVAILABLE_BUDGET = 500.00  # Available budget for investment recovery (R$)
 EXCLUDED_CRYPTOS = ["Bitcoin", "Ethereum", "USDC", "USDT", "Ripple"]  # Coins to exclude from recovery calculation
@@ -990,6 +989,9 @@ def main():
     if file_to_process is None:  # If file discovery failed or was cancelled
         return  # Exit the program
 
+    input_base = Path(file_to_process).stem  # Extract the base name of the input file without extension for use in output file names
+    output_base_name = f"{OUTPUT_DIR}/{input_base} Results"  # Construct the base name for output files using the input file's base name
+
     result_table = calculate_investment_recovery(
         file_to_process, SHEET_NAME, AVAILABLE_BUDGET, EXCLUDED_CRYPTOS, EXCLUDE_POSITIVE_CRYPTOCURRENCIES
     )  # Calculate investment recovery
@@ -1003,8 +1005,8 @@ def main():
     if not verify_filepath_exists(OUTPUT_DIR):  # Ensure output directory exists
         os.makedirs(OUTPUT_DIR, exist_ok=True)  # Create the output directory if it does not exist
 
-    save_table_to_excel(result_table, OUTPUT_FILE)  # Save the results table to Excel file
-    save_table_to_csv(result_table, str(Path(OUTPUT_FILE).with_suffix(".csv")))  # Save the results table to CSV file
+    save_table_to_excel(result_table, f"{output_base_name}.xlsx")  # Save the results table to Excel file
+    save_table_to_csv(result_table, f"{output_base_name}.csv")  # Save the results table to CSV file
 
     finish_time = datetime.datetime.now()  # Get the finish time of the program
     print(
