@@ -365,8 +365,12 @@ def filter_target_investments(df, excluded_cryptos, exclude_positive_cryptos=Tru
         f"{BackgroundColors.GREEN}Filtering data to find eligible investments...{Style.RESET_ALL}"
     )
 
+    excluded_cryptos_lower = {  # Normalize excluded cryptos for case-insensitive comparison
+        crypto.lower() for crypto in excluded_cryptos
+    }
+
     conditions = [  # Define base filtering conditions
-        (~df["Data"].isin(excluded_cryptos)),  # Exclude specified cryptos
+        (~df["Data"].str.lower().isin(excluded_cryptos_lower)),  # Exclude specified cryptos
         (df["Data"] != "SUM")  # Exclude the summary row
     ]
     
@@ -378,7 +382,7 @@ def filter_target_investments(df, excluded_cryptos, exclude_positive_cryptos=Tru
     ].copy()  # Create a copy to avoid SettingWithCopyWarning
 
     verbose_output(  # Output verbose count of eligible assets
-        f"{BackgroundColors.GREEN}Found {BackgroundColors.CYAN}{len(target_df)}{BackgroundColors.GREEN} eligible assets{" with losses" if exclude_positive_cryptos else ""}{Style.RESET_ALL}"
+        f"{BackgroundColors.GREEN}Found {BackgroundColors.CYAN}{len(target_df)}{BackgroundColors.GREEN} eligible assets{' with losses' if exclude_positive_cryptos else ''}{Style.RESET_ALL}"
     )
 
     return target_df  # Return the filtered DataFrame
